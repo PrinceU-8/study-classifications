@@ -410,7 +410,7 @@
     <!-- Header -->
     <header class="title-section">
       <h1>What type of review did you do?</h1>
-      <p> a topic is discussed on a Friday, then next week there will be a quiz about it, when will you review?</p>
+      <p>A topic is discussed on a Friday, then next week there will be a quiz about it, when will you review?</p>
     </header>
 
     <!-- 2x7 Responsive Grid Container -->
@@ -531,20 +531,16 @@
         if (isStrictlyCramming) {
           statusPill.classList.add('status-cramming');
           statusLabel.textContent = 'Cramming';
-          statusDescription.textContent = 'Selected: ${selectedDays[0]};
-            
-
+          statusDescription.textContent = `Selected: ${selectedDays.join(', ')}`;
         } else if (count > 1) {
           statusPill.classList.add('status-spaced');
           statusLabel.textContent = 'Spaced out review';
-          statusDescription.textContent = 'Selected: ${selectedDays[0]};
-          
-
+          statusDescription.textContent = `Selected: ${selectedDays.join(', ')}`;
         } else {
           // Exactly 1 day selected, not Thu or Fri
           statusPill.classList.add('status-block');
           statusLabel.textContent = 'Block review';
-          statusDescription.textContent = 'Selected: ${selectedDays[0]};
+          statusDescription.textContent = `Selected: ${selectedDays[0]}`;
         }
 
         selectedSummary.textContent = `${count} day${count > 1 ? 's' : ''} selected: ${selectedDays.join(', ')}`;
