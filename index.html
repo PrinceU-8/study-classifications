@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>What type of review did you do?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Warm pastel surface tokens */
+      --bg-canvas: #FAF8F5;
+      --card-white: #FFFFFF;
+      --border-subtle: #E8E2DA;
+      --text-main: #2D2735;
+      --text-muted: #827A8C;
+
+      /* Header pill aesthetics */
+      --header-bg: #F4EFEB;
+      --header-text: #6A6070;
+      --weekend-bg: #F8F3EC;
+      --weekend-text: #786D5F;
+
+      /* Regular day cell defaults & selection */
+      --day-bg: #FCFBF9;
+      --day-hover-bg: #F0F7FF;
+      --day-hover-border: #BAE6FD;
+      --day-active-bg: #DBEAFE;
+      --day-active-border: #93C5FD;
+      --day-active-text: #1E3A8A;
+      --day-check-color: #2563EB;
+
+      /* Friday Quiz styling */
+      --quiz-base-bg: #FFF5F7;
+      --quiz-base-border: #FED7E2;
+      --quiz-base-text: #E11D48;
+      --quiz-active-bg: #FB7185;
+      --quiz-active-border: #F43F5E;
+      --quiz-active-text: #FFFFFF;
+
+      /* Dynamic Status Color Themes */
+      --pill-none-bg: #F1ECE6;
+      --pill-none-text: #6E6575;
+      --pill-none-dot: #B6ADC0;
+
+      --pill-cramming-bg: #FFE4E6;
+      --pill-cramming-text: #E11D48;
+      --pill-cramming-dot: #FB7185;
+
+      --pill-block-bg: #E0F2FE;
+      --pill-block-text: #0284C7;
+      --pill-block-dot: #38BDF8;
+
+      --pill-spaced-bg: #DCFCE7;
+      --pill-spaced-text: #15803D;
+      --pill-spaced-dot: #4ADE80;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    /* Main Card Container */
+    .tracker-card {
+      width: 100%;
+      max-width: 820px;
+      background: var(--card-white);
+      border-radius: 28px;
+      padding: 40px 32px;
+      box-shadow: 0 16px 45px -12px rgba(90, 75, 65, 0.08),
+                  0 2px 6px -1px rgba(90, 75, 65, 0.02);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Heading & Subtitle */
+    .title-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .title-section h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-main);
+      line-height: 1.25;
+    }
+
+    .title-section p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    /* Scrollable wrapper for mobile */
+    .grid-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      padding: 4px 2px 14px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* 2x7 Layout */
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(64px, 1fr));
+      gap: 12px;
+      min-width: 490px;
+    }
+
+    /* Header Row (Row 1) */
+    .day-header {
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-align: center;
+      padding: 10px 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+
+    .day-header.weekend {
+      background: var(--weekend-bg);
+      color: var(--weekend-text);
+    }
+
+    .day-header.quiz-header {
+      background: #FFF0F3;
+      color: var(--quiz-base-text);
+    }
+
+    /* Interactive Day Cells (Row 2) */
+    .day-cell {
+      background: var(--day-bg);
+      border: 2px solid var(--border-subtle);
+      border-radius: 18px;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.02);
+    }
+
+    .day-cell:hover {
+      background: var(--day-hover-bg);
+      border-color: var(--day-hover-border);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px -4px rgba(56, 189, 248, 0.16);
+    }
+
+    .day-cell:active {
+      transform: scale(0.95);
+    }
+
+    .day-cell .day-abbr {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .day-cell .check-icon {
+      width: 20px;
+      height: 20px;
+      stroke: var(--day-check-color);
+      stroke-width: 2.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      opacity: 0;
+      transform: scale(0.4);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      margin-top: 4px;
+    }
+
+    /* Selected state for Sat, Sun, Mon, Tue, Wed, Thu */
+    .day-cell.selected {
+      background: var(--day-active-bg);
+      border-color: var(--day-active-border);
+      box-shadow: 0 8px 18px -4px rgba(147, 197, 253, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .day-cell.selected .day-abbr {
+      color: var(--day-active-text);
+    }
+
+    .day-cell.selected .check-icon {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Friday Quiz Cell */
+    .day-cell.quiz-cell {
+      background: var(--quiz-base-bg);
+      border-color: var(--quiz-base-border);
+    }
+
+    .day-cell.quiz-cell:hover {
+      background: #FFE8EC;
+      border-color: #FDA4AF;
+      box-shadow: 0 8px 16px -4px rgba(244, 63, 94, 0.18);
+    }
+
+    .day-cell.quiz-cell .quiz-letter {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--quiz-base-text);
+      line-height: 1;
+    }
+
+    .day-cell.quiz-cell .quiz-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--quiz-base-text);
+      margin-top: 3px;
+      background: rgba(225, 29, 72, 0.08);
+      padding: 2px 7px;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+    }
+
+    /* Friday Quiz Selected */
+    .day-cell.quiz-cell.selected {
+      background: var(--quiz-active-bg);
+      border-color: var(--quiz-active-border);
+      box-shadow: 0 8px 20px -4px rgba(251, 113, 133, 0.5);
+    }
+
+    .day-cell.quiz-cell.selected .quiz-letter {
+      color: var(--quiz-active-text);
+    }
+
+    .day-cell.quiz-cell.selected .quiz-tag {
+      background: rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+    }
+
+    /* Status Section */
+    .status-section {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 28px;
+      border-radius: 9999px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.04);
+    }
+
+    .status-pill .indicator-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      transition: background-color 0.25s, box-shadow 0.25s;
+    }
+
+    /* Pill state classes */
+    .status-pill.status-none {
+      background: var(--pill-none-bg);
+      color: var(--pill-none-text);
+    }
+    .status-pill.status-none .indicator-dot {
+      background: var(--pill-none-dot);
+    }
+
+    .status-pill.status-cramming {
+      background: var(--pill-cramming-bg);
+      color: var(--pill-cramming-text);
+    }
+    .status-pill.status-cramming .indicator-dot {
+      background: var(--pill-cramming-dot);
+      box-shadow: 0 0 10px var(--pill-cramming-dot);
+    }
+
+    .status-pill.status-block {
+      background: var(--pill-block-bg);
+      color: var(--pill-block-text);
+    }
+    .status-pill.status-block .indicator-dot {
+      background: var(--pill-block-dot);
+      box-shadow: 0 0 10px var(--pill-block-dot);
+    }
+
+    .status-pill.status-spaced {
+      background: var(--pill-spaced-bg);
+      color: var(--pill-spaced-text);
+    }
+    .status-pill.status-spaced .indicator-dot {
+      background: var(--pill-spaced-dot);
+      box-shadow: 0 0 10px var(--pill-spaced-dot);
+    }
+
+    /* Detailed explanation text below status pill */
+    .status-description {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      line-height: 1.5;
+      font-weight: 500;
+      min-height: 2.8em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .selected-summary {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #9C93A4;
+    }
+
+    /* Reset button */
+    .reset-btn {
+      margin-top: 14px;
+      background: transparent;
+      border: 1.5px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 9px 20px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s ease;
+    }
+
+    .reset-btn:hover {
+      background: var(--header-bg);
+      color: var(--text-main);
+      border-color: #D6CEC4;
+    }
+
+    .reset-btn:active {
+      transform: scale(0.96);
+    }
+
+    .reset-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    @media (max-width: 580px) {
+      .tracker-card {
+        padding: 28px 18px 32px;
+        border-radius: 24px;
+      }
+      .title-section h1 {
+        font-size: 1.45rem;
+      }
+      .status-pill {
+        padding: 10px 22px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="tracker-card">
+    <!-- Header -->
+    <header class="title-section">
+      <h1>What type of review did you do?</h1>
+      <p> a topic is discussed on a Friday, then next week there will be a quiz about it, when will you review?</p>
+    </header>
+
+    <!-- 2x7 Responsive Grid Container -->
+    <div class="grid-wrapper">
+      <div class="week-grid" role="region" aria-label="Study Schedule Grid">
+        <!-- Row 1: Headers (Saturday & Sunday first) -->
+        <div class="day-header weekend">Sat</div>
+        <div class="day-header weekend">Sun</div>
+        <div class="day-header">Mon</div>
+        <div class="day-header">Tue</div>
+        <div class="day-header">Wed</div>
+        <div class="day-header">Thu</div>
+        <div class="day-header quiz-header">Fri</div>
+
+        <!-- Row 2: Interactive Day Cells -->
+        <!-- Saturday -->
+        <button class="day-cell" data-day="Saturday" type="button" aria-label="Saturday">
+          <span class="day-abbr">Sa</span>
+          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </button>
+
+        <!-- Sunday -->
+        <button class="day-cell" data-day="Sunday" type="button" aria-label="Sunday">
+          <span class="day-abbr">Su</span>
+          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </button>
+
+        <!-- Monday -->
+        <button class="day-cell" data-day="Monday" type="button" aria-label="Monday">
+          <span class="day-abbr">M</span>
+          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </button>
+
+        <!-- Tuesday -->
+        <button class="day-cell" data-day="Tuesday" type="button" aria-label="Tuesday">
+          <span class="day-abbr">T</span>
+          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </button>
+
+        <!-- Wednesday -->
+        <button class="day-cell" data-day="Wednesday" type="button" aria-label="Wednesday">
+          <span class="day-abbr">W</span>
+          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </button>
+
+        <!-- Thursday -->
+        <button class="day-cell" data-day="Thursday" type="button" aria-label="Thursday">
+          <span class="day-abbr">Th</span>
+          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </button>
+
+        <!-- Friday: Quiz Q Cell -->
+        <button class="day-cell quiz-cell" data-day="Friday" type="button" aria-label="Friday Quiz">
+          <span class="quiz-letter">Q</span>
+          <span class="quiz-tag">Quiz</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Status & Feedback Display -->
+    <div class="status-section">
+      <div id="statusPill" class="status-pill status-none">
+        <span class="indicator-dot"></span>
+        <span id="statusLabel">No review</span>
+      </div>
+
+      <p id="statusDescription" class="status-description">
+        You haven't selected any study sessions yet this week.
+      </p>
+
+      <span id="selectedSummary" class="selected-summary">0 days selected</span>
+
+      <button id="resetBtn" class="reset-btn" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+        <span>Reset week</span>
+      </button>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const dayCells = Array.from(document.querySelectorAll('.day-cell'));
+      const statusPill = document.getElementById('statusPill');
+      const statusLabel = document.getElementById('statusLabel');
+      const statusDescription = document.getElementById('statusDescription');
+      const selectedSummary = document.getElementById('selectedSummary');
+      const resetBtn = document.getElementById('resetBtn');
+
+      /**
+       * Evaluation rules:
+       * - 0 selected: "No review"
+       * - Thursday, Friday, or both Thursday and Friday (exclusively): "Cramming"
+       * - Exactly 1 day (Sat, Sun, Mon, Tue, or Wed): "Block review"
+       * - 2 or more days (not exclusively Thu/Fri): "Spaced out review"
+       */
+      function evaluateReviewState() {
+        const selectedCells = dayCells.filter(cell => cell.classList.contains('selected'));
+        const selectedDays = selectedCells.map(cell => cell.getAttribute('data-day'));
+        const count = selectedDays.length;
+
+        // Reset status pill class list
+        statusPill.className = 'status-pill';
+
+        if (count === 0) {
+          statusPill.classList.add('status-none');
+          statusLabel.textContent = 'No review';
+          statusDescription.textContent = "You haven't selected any study sessions yet this week.";
+          selectedSummary.textContent = '0 days selected';
+          return;
+        }
+
+        // Check if all selected days are strictly within { Thursday, Friday }
+        const isStrictlyCramming = selectedDays.every(day => day === 'Thursday' || day === 'Friday');
+
+        if (isStrictlyCramming) {
+          statusPill.classList.add('status-cramming');
+          statusLabel.textContent = 'Cramming';
+          statusDescription.textContent = selectedDays.length === 2
+            
+
+        } else if (count > 1) {
+          statusPill.classList.add('status-spaced');
+          statusLabel.textContent = 'Spaced out review';
+          
+
+        } else {
+          // Exactly 1 day selected, not Thu or Fri
+          statusPill.classList.add('status-block');
+          statusLabel.textContent = 'Block review';
+        }
+
+        selectedSummary.textContent = `${count} day${count > 1 ? 's' : ''} selected: ${selectedDays.join(', ')}`;
+      }
+
+      // Pointer/Click handling for both mobile and desktop
+      dayCells.forEach(cell => {
+        cell.addEventListener('click', (e) => {
+          e.preventDefault();
+          cell.classList.toggle('selected');
+          evaluateReviewState();
+        });
+      });
+
+      // Reset functionality
+      resetBtn.addEventListener('click', () => {
+        dayCells.forEach(cell => cell.classList.remove('selected'));
+        evaluateReviewState();
+      });
+
+      // Initial run
+      evaluateReviewState();
+    });
+  </script>
+</body>
+</html>
