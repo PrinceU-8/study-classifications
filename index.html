@@ -333,9 +333,9 @@
       box-shadow: 0 0 10px var(--pill-spaced-dot);
     }
 
-    /* Detailed explanation text below status pill */
+    /* Simple, direct definition text */
     .status-description {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
       max-width: 480px;
       line-height: 1.5;
@@ -478,7 +478,7 @@
       </div>
 
       <p id="statusDescription" class="status-description">
-        You haven't selected any study sessions yet this week.
+        You did not study or prepare on any day before the quiz.
       </p>
 
       <span id="selectedSummary" class="selected-summary">0 days selected</span>
@@ -520,7 +520,7 @@
         if (count === 0) {
           statusPill.classList.add('status-none');
           statusLabel.textContent = 'No review';
-          statusDescription.textContent = "You haven't selected any study sessions yet this week.";
+          statusDescription.textContent = 'You did not study or prepare on any day before the quiz.';
           selectedSummary.textContent = '0 days selected';
           return;
         }
@@ -531,16 +531,16 @@
         if (isStrictlyCramming) {
           statusPill.classList.add('status-cramming');
           statusLabel.textContent = 'Cramming';
-          statusDescription.textContent = `Selected: ${selectedDays.join(', ')}`;
+          statusDescription.textContent = 'Studying only the day before or on the day of the quiz.';
         } else if (count > 1) {
           statusPill.classList.add('status-spaced');
           statusLabel.textContent = 'Spaced out review';
-          statusDescription.textContent = `Selected: ${selectedDays.join(', ')}`;
+          statusDescription.textContent = 'Spreading your study sessions across multiple days leading up to the quiz.';
         } else {
           // Exactly 1 day selected, not Thu or Fri
           statusPill.classList.add('status-block');
           statusLabel.textContent = 'Block review';
-          statusDescription.textContent = `Selected: ${selectedDays[0]}`;
+          statusDescription.textContent = 'Doing all your studying in a single session earlier in the week.';
         }
 
         selectedSummary.textContent = `${count} day${count > 1 ? 's' : ''} selected: ${selectedDays.join(', ')}`;
