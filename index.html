@@ -531,18 +531,20 @@
         if (isStrictlyCramming) {
           statusPill.classList.add('status-cramming');
           statusLabel.textContent = 'Cramming';
-          statusDescription.textContent = selectedDays.length === 2
+          statusDescription.textContent = 'Selected: ${selectedDays[0]};
             
 
         } else if (count > 1) {
           statusPill.classList.add('status-spaced');
           statusLabel.textContent = 'Spaced out review';
+          statusDescription.textContent = 'Selected: ${selectedDays[0]};
           
 
         } else {
           // Exactly 1 day selected, not Thu or Fri
           statusPill.classList.add('status-block');
           statusLabel.textContent = 'Block review';
+          statusDescription.textContent = 'Selected: ${selectedDays[0]};
         }
 
         selectedSummary.textContent = `${count} day${count > 1 ? 's' : ''} selected: ${selectedDays.join(', ')}`;
