@@ -10,20 +10,17 @@
 
   <style>
     :root {
-      /* Warm pastel surface tokens */
       --bg-canvas: #FAF8F5;
       --card-white: #FFFFFF;
       --border-subtle: #E8E2DA;
       --text-main: #2D2735;
       --text-muted: #827A8C;
 
-      /* Header aesthetics */
       --header-bg: #F4EFEB;
       --header-text: #6A6070;
       --weekend-bg: #F8F3EC;
       --weekend-text: #786D5F;
 
-      /* Regular day cell defaults & selection */
       --day-bg: #FCFBF9;
       --day-hover-bg: #F0F7FF;
       --day-hover-border: #BAE6FD;
@@ -32,7 +29,6 @@
       --day-active-text: #1E3A8A;
       --day-check-color: #2563EB;
 
-      /* Friday Quiz styling */
       --quiz-base-bg: #FFF5F7;
       --quiz-base-border: #FED7E2;
       --quiz-base-text: #E11D48;
@@ -40,7 +36,6 @@
       --quiz-active-border: #F43F5E;
       --quiz-active-text: #FFFFFF;
 
-      /* Dynamic Status Color Themes */
       --pill-none-bg: #F1ECE6;
       --pill-none-text: #6E6575;
       --pill-none-dot: #B6ADC0;
@@ -110,10 +105,8 @@
       color: var(--text-muted);
       margin-top: 8px;
       font-weight: 500;
-      max-width: 580px;
     }
 
-    /* Scrollable wrapper for mobile responsiveness */
     .grid-wrapper {
       width: 100%;
       overflow-x: auto;
@@ -121,7 +114,6 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* 2x7 Layout */
     .week-grid {
       display: grid;
       grid-template-columns: repeat(7, minmax(64px, 1fr));
@@ -129,7 +121,6 @@
       min-width: 490px;
     }
 
-    /* Header Row (Row 1) */
     .day-header {
       background: var(--header-bg);
       color: var(--header-text);
@@ -200,7 +191,6 @@
       margin-top: 4px;
     }
 
-    /* Selected state */
     .day-cell.selected {
       background: var(--day-active-bg);
       border-color: var(--day-active-border);
@@ -217,7 +207,6 @@
       transform: scale(1);
     }
 
-    /* Friday Quiz Cell */
     .day-cell.quiz-cell {
       background: var(--quiz-base-bg);
       border-color: var(--quiz-base-border);
@@ -264,8 +253,9 @@
       color: #FFFFFF;
     }
 
+    /* Status and Action Buttons */
     .status-section {
-      margin-top: 32px;
+      margin-top: 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -294,7 +284,6 @@
       transition: background-color 0.25s, box-shadow 0.25s;
     }
 
-    /* Pill state variations */
     .status-pill.status-none {
       background: var(--pill-none-bg);
       color: var(--pill-none-text);
@@ -331,7 +320,7 @@
     }
 
     .status-description {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
       max-width: 480px;
       line-height: 1.5;
@@ -348,35 +337,28 @@
       color: #9C93A4;
     }
 
-    .actions-row {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      margin-top: 8px;
-      width: 100%;
-    }
-
-    /* Google Form link button */
+    /* THE GOOGLE FORM BUTTON */
     .survey-btn {
-      background: #1E3A8A;
+      margin-top: 14px;
+      background: #2563EB;
       color: #FFFFFF;
       text-decoration: none;
-      padding: 14px 30px;
+      padding: 14px 28px;
       border-radius: 9999px;
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
-      box-shadow: 0 8px 20px -4px rgba(30, 58, 138, 0.35);
+      box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.4);
       transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .survey-btn:hover {
-      background: #172554;
+      background: #1D4ED8;
       transform: translateY(-2px);
-      box-shadow: 0 12px 24px -4px rgba(30, 58, 138, 0.45);
+      box-shadow: 0 12px 24px -4px rgba(37, 99, 235, 0.5);
     }
 
     .survey-btn:active {
@@ -393,14 +375,14 @@
       fill: none;
     }
 
-    /* Reset button */
     .reset-btn {
+      margin-top: 6px;
       background: transparent;
       border: 1.5px solid var(--border-subtle);
       color: var(--text-muted);
-      padding: 8px 20px;
+      padding: 8px 18px;
       border-radius: 999px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
@@ -437,15 +419,9 @@
       .title-section h1 {
         font-size: 1.45rem;
       }
-      .status-pill {
-        padding: 10px 22px;
-        font-size: 1rem;
-      }
       .survey-btn {
         width: 100%;
-        justify-content: center;
-        padding: 14px 20px;
-        font-size: 0.95rem;
+        max-width: 340px;
       }
     }
   </style>
@@ -458,10 +434,8 @@
       <p>A topic is discussed on a Friday, then next week there will be a quiz about it. When will you review?</p>
     </header>
 
-    <!-- 2x7 Responsive Grid Container -->
     <div class="grid-wrapper">
       <div class="week-grid" role="region" aria-label="Study Schedule Grid">
-        <!-- Row 1: Headers (Saturday & Sunday first) -->
         <div class="day-header weekend">Sat</div>
         <div class="day-header weekend">Sun</div>
         <div class="day-header">Mon</div>
@@ -470,7 +444,6 @@
         <div class="day-header">Thu</div>
         <div class="day-header quiz-header">Fri</div>
 
-        <!-- Row 2: Interactive Day Cells -->
         <button class="day-cell" data-day="Saturday" type="button" aria-label="Saturday">
           <span class="day-abbr">Sa</span>
           <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
@@ -501,7 +474,6 @@
           <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
         </button>
 
-        <!-- Friday: Quiz Q Cell -->
         <button class="day-cell quiz-cell" data-day="Friday" type="button" aria-label="Friday Quiz">
           <span class="quiz-letter">Q</span>
           <span class="quiz-tag">Quiz</span>
@@ -509,7 +481,7 @@
       </div>
     </div>
 
-    <!-- Status & Feedback Display -->
+    <!-- Status & Action Area -->
     <div class="status-section">
       <div id="statusPill" class="status-pill status-none">
         <span class="indicator-dot"></span>
@@ -522,24 +494,22 @@
 
       <span id="selectedSummary" class="selected-summary">0 days selected</span>
 
-      <div class="actions-row">
-        <!-- Direct Google Form Pre-fill Link Button -->
-        <a id="surveyBtn" class="survey-btn" href="#" target="_blank" rel="noopener">
-          <span>Continue to Survey with my result</span>
-          <svg viewBox="0 0 24 24">
-            <path d="M5 12h14"></path>
-            <path d="M12 5l7 7-7 7"></path>
-          </svg>
-        </a>
+      <!-- GOOGLE FORM SUBMIT/REDIRECT BUTTON -->
+      <a id="surveyBtn" class="survey-btn" href="#" target="_blank" rel="noopener">
+        <span>Continue to Survey with my result</span>
+        <svg viewBox="0 0 24 24">
+          <path d="M5 12h14"/>
+          <path d="M12 5l7 7-7 7"/>
+        </svg>
+      </a>
 
-        <button id="resetBtn" class="reset-btn" type="button">
-          <svg viewBox="0 0 24 24">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-            <path d="M3 3v5h5"/>
-          </svg>
-          <span>Reset week</span>
-        </button>
-      </div>
+      <button id="resetBtn" class="reset-btn" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+        <span>Reset week</span>
+      </button>
     </div>
   </main>
 
@@ -550,23 +520,15 @@
       const statusLabel = document.getElementById('statusLabel');
       const statusDescription = document.getElementById('statusDescription');
       const selectedSummary = document.getElementById('selectedSummary');
-      const surveyBtn = document.getElementById('surveyBtn');
       const resetBtn = document.getElementById('resetBtn');
+      const surveyBtn = document.getElementById('surveyBtn');
 
-      // Google Form Configuration using your exact entry and parameter keys
-      const GOOGLE_FORM_BASE = "https://docs.google.com/forms/d/e/1FAIpQLScyYKMLgMfhFNzMIAWAcKEmXRvnZiutQeieRfAZrMN7eAvnjw/viewform?usp=pp_url";
+      // Your actual Google Form Base URL and Entry ID
+      const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLScyYKMLgMfhFNzMIAWAcKEmXRvnZiutQeieRfAZrMN7eAvnjw/viewform?usp=pp_url";
       const ENTRY_ID = "entry.1317088367";
 
-      /**
-       * Mapping app states to the exact values configured in your Google Form:
-       * - "No review" -> "no review"
-       * - "Cramming" -> "cram"
-       * - "Block review" -> "block"
-       * - "Spaced out review" -> "spaced-out"
-       */
-      function updateGoogleFormLink(formAnswerValue) {
-        const prefilledUrl = `${GOOGLE_FORM_BASE}&${ENTRY_ID}=${encodeURIComponent(formAnswerValue)}`;
-        surveyBtn.href = prefilledUrl;
+      function updateSurveyLink(value) {
+        surveyBtn.href = `${FORM_BASE_URL}&${ENTRY_ID}=${encodeURIComponent(value)}`;
       }
 
       function evaluateReviewState() {
@@ -574,43 +536,39 @@
         const selectedDays = selectedCells.map(cell => cell.getAttribute('data-day'));
         const count = selectedDays.length;
 
-        // Reset status pill theme classes
         statusPill.className = 'status-pill';
 
         if (count === 0) {
           statusPill.classList.add('status-none');
           statusLabel.textContent = 'No review';
-          statusDescription.textContent = 'You did not study or prepare on any day before the quiz.';
+          statusDescription.textContent = "You did not study or prepare on any day before the quiz.";
           selectedSummary.textContent = '0 days selected';
-          updateGoogleFormLink('no review');
+          updateSurveyLink('no review');
           return;
         }
 
-        // Check if all selected days are exclusively Thursday, Friday, or both
         const isStrictlyCramming = selectedDays.every(day => day === 'Thursday' || day === 'Friday');
 
         if (isStrictlyCramming) {
           statusPill.classList.add('status-cramming');
           statusLabel.textContent = 'Cramming';
-          statusDescription.textContent = 'Studying only the day before or on the day of the quiz.';
-          updateGoogleFormLink('cram');
+          statusDescription.textContent = "Studying only the day before or on the day of the quiz.";
+          updateSurveyLink('cram');
         } else if (count > 1) {
           statusPill.classList.add('status-spaced');
           statusLabel.textContent = 'Spaced out review';
-          statusDescription.textContent = 'Spreading your study sessions across multiple days leading up to the quiz.';
-          updateGoogleFormLink('spaced-out');
+          statusDescription.textContent = "Spreading your study sessions across multiple days leading up to the quiz.";
+          updateSurveyLink('spaced-out');
         } else {
-          // Exactly 1 day selected, not Thu or Fri
           statusPill.classList.add('status-block');
           statusLabel.textContent = 'Block review';
-          statusDescription.textContent = 'Doing all your studying in a single session earlier in the week.';
-          updateGoogleFormLink('block');
+          statusDescription.textContent = "Doing all your studying in a single session earlier in the week.";
+          updateSurveyLink('block');
         }
 
         selectedSummary.textContent = `${count} day${count > 1 ? 's' : ''} selected: ${selectedDays.join(', ')}`;
       }
 
-      // Pointer / Click handling for mobile and desktop
       dayCells.forEach(cell => {
         cell.addEventListener('click', (e) => {
           e.preventDefault();
@@ -619,13 +577,12 @@
         });
       });
 
-      // Reset button clears active selections
       resetBtn.addEventListener('click', () => {
         dayCells.forEach(cell => cell.classList.remove('selected'));
         evaluateReviewState();
       });
 
-      // Initial execution
+      // Initialize defaults
       evaluateReviewState();
     });
   </script>
