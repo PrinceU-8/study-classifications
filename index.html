@@ -524,8 +524,8 @@
       const surveyBtn = document.getElementById('surveyBtn');
 
       // Your actual Google Form Base URL and Entry ID
-      const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeopXUSNnxjcF5Mo8oV_Q5lU3nTTji55Q9RTD6CORmWIOASmw/viewform?usp=dialog";
-      const ENTRY_ID = "entry.1317088367";
+      const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeopXUSNnxjcF5Mo8oV_Q5lU3nTTji55Q9RTD6CORmWIOASmw/viewform?;
+      const ENTRY_ID = "entry.1005150832";
 
       function updateSurveyLink(value) {
         surveyBtn.href = `${FORM_BASE_URL}&${ENTRY_ID}=${encodeURIComponent(value)}`;
