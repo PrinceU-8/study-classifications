@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ELEMELEC Quiz 5 - Review Style Identifier</title>
+  <title>ELEMELEC Quiz 5 - Study Style Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -75,7 +75,7 @@
 
     .tracker-card {
       width: 100%;
-      max-width: 760px;
+      max-width: 820px;
       background: var(--card-white);
       border-radius: 28px;
       padding: 40px 32px;
@@ -107,7 +107,7 @@
     }
 
     .title-section h1 {
-      font-size: 1.7rem;
+      font-size: 1.75rem;
       font-weight: 800;
       letter-spacing: -0.025em;
       color: var(--text-main);
@@ -123,7 +123,6 @@
       line-height: 1.5;
     }
 
-    /* Quiz Day Selection Dropdown Bar */
     .quiz-selector-bar {
       width: 100%;
       background: #FAF8F5;
@@ -163,12 +162,11 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* 6-column grid (Saturday, Monday - Friday) */
     .week-grid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(64px, 1fr));
+      grid-template-columns: repeat(7, minmax(64px, 1fr));
       gap: 12px;
-      min-width: 440px;
+      min-width: 490px;
     }
 
     .day-header {
@@ -291,7 +289,6 @@
       color: #FFFFFF;
     }
 
-    /* Status Section & Submit */
     .status-section {
       margin-top: 24px;
       display: flex;
@@ -472,10 +469,10 @@
 
     <header class="title-section">
       <h1>What study style did you use for Quiz #5?</h1>
-      <p>Confirm the day Quiz #5 took place, then tap the days you actually reviewed before taking it.</p>
+      <p>Identify the day Quiz 5 was conducted, then select each day you actually reviewed before it.</p>
     </header>
 
-    <!-- Quiz Day Confirmation -->
+    <!-- Quiz Conducted Day Selector: Sunday removed, Monday to Saturday kept -->
     <div class="quiz-selector-bar">
       <span>When was Quiz #5 conducted?</span>
       <select id="quizConductedDay" aria-label="Select Quiz Day">
@@ -488,46 +485,59 @@
       </select>
     </div>
 
-    <!-- 6-Day Grid (Sunday Removed) -->
     <div class="grid-wrapper">
-      <div class="week-grid" role="region" aria-label="Study Days Grid">
+      <div class="week-grid" role="region" aria-label="Study Schedule Grid">
         <div class="day-header weekend" data-header="Saturday">Sat</div>
+        <div class="day-header weekend" data-header="Sunday">Sun</div>
         <div class="day-header" data-header="Monday">Mon</div>
         <div class="day-header" data-header="Tuesday">Tue</div>
         <div class="day-header" data-header="Wednesday">Wed</div>
         <div class="day-header" data-header="Thursday">Thu</div>
         <div class="day-header is-quiz-day" data-header="Friday">Fri</div>
 
+        <!-- Saturday Review -->
         <button class="day-cell" data-day="Saturday" type="button" aria-label="Saturday">
           <span class="day-abbr">Sa</span>
           <span class="quiz-tag" style="display:none;">Quiz</span>
           <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
         </button>
 
+        <!-- Sunday Review (Kept as review option) -->
+        <button class="day-cell" data-day="Sunday" type="button" aria-label="Sunday">
+          <span class="day-abbr">Su</span>
+          <span class="quiz-tag" style="display:none;">Quiz</span>
+          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </button>
+
+        <!-- Monday Review -->
         <button class="day-cell" data-day="Monday" type="button" aria-label="Monday">
           <span class="day-abbr">M</span>
           <span class="quiz-tag" style="display:none;">Quiz</span>
           <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
         </button>
 
+        <!-- Tuesday Review -->
         <button class="day-cell" data-day="Tuesday" type="button" aria-label="Tuesday">
           <span class="day-abbr">T</span>
           <span class="quiz-tag" style="display:none;">Quiz</span>
           <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
         </button>
 
+        <!-- Wednesday Review -->
         <button class="day-cell" data-day="Wednesday" type="button" aria-label="Wednesday">
           <span class="day-abbr">W</span>
           <span class="quiz-tag" style="display:none;">Quiz</span>
           <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
         </button>
 
+        <!-- Thursday Review -->
         <button class="day-cell" data-day="Thursday" type="button" aria-label="Thursday">
           <span class="day-abbr">Th</span>
           <span class="quiz-tag" style="display:none;">Quiz</span>
           <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
         </button>
 
+        <!-- Friday Review -->
         <button class="day-cell quiz-day-cell" data-day="Friday" type="button" aria-label="Friday">
           <span class="day-abbr">F</span>
           <span class="quiz-tag">Quiz</span>
@@ -536,7 +546,6 @@
       </div>
     </div>
 
-    <!-- Status & Transfer to Google Forms -->
     <div class="status-section">
       <div id="statusPill" class="status-pill status-none">
         <span class="indicator-dot"></span>
@@ -544,7 +553,7 @@
       </div>
 
       <p id="statusDescription" class="status-description">
-        You did not study on any day leading up to Quiz #5.
+        You did not study or prepare on any day before Quiz #5.
       </p>
 
       <span id="selectedSummary" class="selected-summary">0 review days selected</span>
@@ -579,9 +588,8 @@
       const resetBtn = document.getElementById('resetBtn');
       const surveyBtn = document.getElementById('surveyBtn');
 
-      const DAYS_ORDER = ['Saturday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+      const DAYS_ORDER = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
-      // Active form URLs & target Entry ID
       const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeopXUSNnxjcF5Mo8oV_Q5lU3nTTji55Q9RTD6CORmWIOASmw/viewform?usp=pp_url";
       const ENTRY_ID = "entry.1317088367";
 
@@ -628,29 +636,28 @@
         if (count === 0) {
           statusPill.classList.add('status-none');
           statusLabel.textContent = 'No review';
-          statusDescription.textContent = "You did not study on any day leading up to Quiz #5.";
+          statusDescription.textContent = "You did not study or prepare on any day before Quiz #5.";
           selectedSummary.textContent = '0 review days selected';
           currentFormAnswer = 'No+Review';
           return;
         }
 
-        // Cramming = studying exclusively on the quiz day, the day immediately before, or both
         const isStrictlyCramming = selectedDays.every(d => d === quizDay || d === dayBefore);
 
         if (isStrictlyCramming) {
           statusPill.classList.add('status-cramming');
           statusLabel.textContent = 'Cramming';
-          statusDescription.textContent = `You studied only on the day of the quiz (${quizDay}) or the day right before it (${dayBefore}).`;
+          statusDescription.textContent = `Studied only the day before (${dayBefore}) or on the day of Quiz #5 (${quizDay}).`;
           currentFormAnswer = 'Cram';
         } else if (count > 1) {
           statusPill.classList.add('status-spaced');
           statusLabel.textContent = 'Spaced out review';
-          statusDescription.textContent = "You spread your study sessions across multiple days throughout the week.";
+          statusDescription.textContent = "Spread study sessions across multiple days leading up to Quiz #5.";
           currentFormAnswer = 'Spaced-out+Study';
         } else {
           statusPill.classList.add('status-block');
           statusLabel.textContent = 'Block review';
-          statusDescription.textContent = "You did all your studying in a single dedicated session earlier in the week.";
+          statusDescription.textContent = "Did all studying in a single session earlier in the week.";
           currentFormAnswer = 'Block+Review';
         }
 
