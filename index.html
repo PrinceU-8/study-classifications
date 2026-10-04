@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ELEMELEC Quiz 5 - Study Style Tracker</title>
+  <title>ELEMELEC Quiz 5 - Study Style Calendar</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -18,24 +18,26 @@
 
       --header-bg: #F4EFEB;
       --header-text: #6A6070;
-      --weekend-bg: #F8F3EC;
-      --weekend-text: #786D5F;
 
-      --day-bg: #FCFBF9;
-      --day-hover-bg: #F0F7FF;
-      --day-hover-border: #BAE6FD;
-      --day-active-bg: #DBEAFE;
-      --day-active-border: #93C5FD;
-      --day-active-text: #1E3A8A;
-      --day-check-color: #2563EB;
+      /* Date cell styling */
+      --cell-bg: #FCFBF9;
+      --cell-hover: #F0F7FF;
+      --cell-border: #E8E2DA;
+      --cell-today-border: #BAE6FD;
 
-      --quiz-base-bg: #FFF5F7;
-      --quiz-base-border: #FED7E2;
-      --quiz-base-text: #E11D48;
-      --quiz-active-bg: #FB7185;
+      /* Review selection */
+      --review-active-bg: #DBEAFE;
+      --review-active-border: #60A5FA;
+      --review-active-text: #1E3A8A;
+      --review-badge-bg: #2563EB;
+
+      /* Quiz selection */
+      --quiz-active-bg: #FFE4E8;
       --quiz-active-border: #F43F5E;
-      --quiz-active-text: #FFFFFF;
+      --quiz-active-text: #9F1239;
+      --quiz-badge-bg: #E11D48;
 
+      /* Status Pill Color Themes */
       --pill-none-bg: #F1ECE6;
       --pill-none-text: #6E6575;
       --pill-none-dot: #B6ADC0;
@@ -75,10 +77,10 @@
 
     .tracker-card {
       width: 100%;
-      max-width: 820px;
+      max-width: 680px;
       background: var(--card-white);
       border-radius: 28px;
-      padding: 40px 32px;
+      padding: 36px 28px;
       box-shadow: 0 16px 45px -12px rgba(90, 75, 65, 0.08),
                   0 2px 6px -1px rgba(90, 75, 65, 0.02);
       border: 1px solid var(--border-subtle);
@@ -103,11 +105,11 @@
 
     .title-section {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .title-section h1 {
-      font-size: 1.75rem;
+      font-size: 1.65rem;
       font-weight: 800;
       letter-spacing: -0.025em;
       color: var(--text-main);
@@ -115,17 +117,18 @@
     }
 
     .title-section p {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--text-muted);
-      margin-top: 8px;
+      margin-top: 6px;
       font-weight: 500;
-      max-width: 580px;
-      line-height: 1.5;
+      max-width: 520px;
+      line-height: 1.45;
     }
 
-    .quiz-selector-bar {
+    /* STEP INSTRUCTION BANNER */
+    .step-banner {
       width: 100%;
-      background: #FAF8F5;
+      background: #FDFBF7;
       border: 1.5px solid var(--border-subtle);
       border-radius: 16px;
       padding: 12px 18px;
@@ -133,70 +136,130 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
 
-    .quiz-selector-bar span {
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-number {
+      background: #2563EB;
+      color: #FFFFFF;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-number.step-quiz {
+      background: #E11D48;
+    }
+
+    .step-text {
       font-size: 0.9rem;
       font-weight: 700;
       color: var(--text-main);
     }
 
-    .quiz-selector-bar select {
+    .step-btn-toggle {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .step-btn-toggle:hover {
+      border-color: #BFDBFE;
+      color: #1D4ED8;
+    }
+
+    /* CALENDAR COMPONENT */
+    .calendar-container {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    .calendar-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding: 0 4px;
+    }
+
+    .calendar-month-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .nav-btn {
       background: #FFFFFF;
       border: 1.5px solid var(--border-subtle);
       border-radius: 10px;
-      padding: 6px 14px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #E11D48;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      outline: none;
+      color: var(--text-main);
+      transition: all 0.15s ease;
     }
 
-    .grid-wrapper {
-      width: 100%;
-      overflow-x: auto;
-      padding: 4px 2px 14px;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .week-grid {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(64px, 1fr));
-      gap: 12px;
-      min-width: 490px;
-    }
-
-    .day-header {
+    .nav-btn:hover {
       background: var(--header-bg);
-      color: var(--header-text);
-      font-size: 0.8rem;
+    }
+
+    .nav-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .calendar-day-header {
+      font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
+      color: var(--header-text);
       text-align: center;
-      padding: 10px 4px;
-      border-radius: 12px;
-      border: 1px solid rgba(0, 0, 0, 0.02);
-      transition: all 0.2s ease;
+      padding: 6px 0;
     }
 
-    .day-header.weekend {
-      background: var(--weekend-bg);
-      color: var(--weekend-text);
+    .calendar-day-header.weekend {
+      color: #9C8E7D;
     }
 
-    .day-header.is-quiz-day {
-      background: #FFF0F3;
-      color: var(--quiz-base-text);
-    }
-
-    .day-cell {
-      background: var(--day-bg);
-      border: 2px solid var(--border-subtle);
-      border-radius: 18px;
+    /* Calendar Day Buttons */
+    .cal-cell {
+      background: var(--cell-bg);
+      border: 1.5px solid var(--cell-border);
+      border-radius: 14px;
       aspect-ratio: 1 / 1;
       display: flex;
       flex-direction: column;
@@ -204,108 +267,104 @@
       justify-content: center;
       cursor: pointer;
       position: relative;
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.02);
+      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+      padding: 2px;
     }
 
-    .day-cell:hover {
-      background: var(--day-hover-bg);
-      border-color: var(--day-hover-border);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 16px -4px rgba(56, 189, 248, 0.16);
+    .cal-cell.empty {
+      visibility: hidden;
+      cursor: default;
     }
 
-    .day-cell:active {
-      transform: scale(0.95);
-    }
-
-    .day-cell .day-abbr {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      transition: color 0.2s;
-    }
-
-    .day-cell .check-icon {
-      width: 20px;
-      height: 20px;
-      stroke: var(--day-check-color);
-      stroke-width: 2.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-      opacity: 0;
-      transform: scale(0.4);
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      margin-top: 4px;
-    }
-
-    .day-cell.selected {
-      background: var(--day-active-bg);
-      border-color: var(--day-active-border);
-      box-shadow: 0 8px 18px -4px rgba(147, 197, 253, 0.4);
+    .cal-cell:hover:not(.disabled) {
+      background: var(--cell-hover);
+      border-color: #BAE6FD;
       transform: translateY(-2px);
     }
 
-    .day-cell.selected .day-abbr {
-      color: var(--day-active-text);
+    .cal-cell:active:not(.disabled) {
+      transform: scale(0.94);
     }
 
-    .day-cell.selected .check-icon {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .day-cell.quiz-day-cell {
-      background: var(--quiz-base-bg);
-      border-color: var(--quiz-base-border);
-    }
-
-    .day-cell.quiz-day-cell .quiz-tag {
-      font-size: 0.65rem;
+    .cal-date-number {
+      font-size: 0.95rem;
       font-weight: 700;
+      color: var(--text-main);
+      line-height: 1;
+    }
+
+    .cal-tag {
+      font-size: 0.55rem;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--quiz-base-text);
       margin-top: 3px;
-      background: rgba(225, 29, 72, 0.08);
-      padding: 2px 7px;
-      border-radius: 999px;
-      transition: all 0.2s ease;
+      padding: 1px 5px;
+      border-radius: 6px;
+      display: none;
     }
 
-    .day-cell.quiz-day-cell.selected {
+    /* QUIZ DAY STYLING */
+    .cal-cell.is-quiz-day {
       background: var(--quiz-active-bg);
       border-color: var(--quiz-active-border);
-      box-shadow: 0 8px 20px -4px rgba(251, 113, 133, 0.5);
+      box-shadow: 0 4px 14px -2px rgba(244, 63, 94, 0.35);
     }
 
-    .day-cell.quiz-day-cell.selected .day-abbr {
+    .cal-cell.is-quiz-day .cal-date-number {
       color: var(--quiz-active-text);
+      font-weight: 800;
     }
 
-    .day-cell.quiz-day-cell.selected .quiz-tag {
-      background: rgba(255, 255, 255, 0.25);
+    .cal-cell.is-quiz-day .cal-tag {
+      display: block;
+      background: var(--quiz-badge-bg);
       color: #FFFFFF;
     }
 
+    /* REVIEW DAY STYLING */
+    .cal-cell.is-review-day {
+      background: var(--review-active-bg);
+      border-color: var(--review-active-border);
+      box-shadow: 0 4px 14px -2px rgba(37, 99, 235, 0.25);
+    }
+
+    .cal-cell.is-review-day .cal-date-number {
+      color: var(--review-active-text);
+      font-weight: 800;
+    }
+
+    .cal-cell.is-review-day .cal-tag {
+      display: block;
+      background: var(--review-badge-bg);
+      color: #FFFFFF;
+    }
+
+    /* If quiz and review overlap (reviewed on quiz day) */
+    .cal-cell.is-quiz-day.is-review-day {
+      background: #FEE2E2;
+      border-color: #E11D48;
+      box-shadow: 0 4px 14px -2px rgba(225, 29, 72, 0.4);
+    }
+
+    /* STATUS FEEDBACK & ACTIONS */
     .status-section {
-      margin-top: 24px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       text-align: center;
-      width: 100%;
     }
 
     .status-pill {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 12px 28px;
+      padding: 11px 26px;
       border-radius: 9999px;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       letter-spacing: -0.01em;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -358,9 +417,9 @@
       font-size: 0.9rem;
       color: var(--text-muted);
       max-width: 480px;
-      line-height: 1.5;
+      line-height: 1.45;
       font-weight: 500;
-      min-height: 2.8em;
+      min-height: 2.7em;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -373,11 +432,11 @@
     }
 
     .survey-btn {
-      margin-top: 14px;
+      margin-top: 10px;
       background: #2563EB;
       color: #FFFFFF;
       text-decoration: none;
-      padding: 14px 28px;
+      padding: 13px 28px;
       border-radius: 9999px;
       font-size: 0.98rem;
       font-weight: 700;
@@ -447,17 +506,25 @@
       fill: none;
     }
 
-    @media (max-width: 580px) {
+    @media (max-width: 540px) {
       .tracker-card {
-        padding: 28px 18px 32px;
-        border-radius: 24px;
+        padding: 24px 16px 28px;
+        border-radius: 22px;
       }
       .title-section h1 {
-        font-size: 1.45rem;
+        font-size: 1.4rem;
+      }
+      .calendar-grid {
+        gap: 5px;
+      }
+      .cal-cell {
+        border-radius: 10px;
+      }
+      .cal-date-number {
+        font-size: 0.88rem;
       }
       .survey-btn {
         width: 100%;
-        max-width: 340px;
       }
     }
   </style>
@@ -468,84 +535,46 @@
     <div class="course-badge">ELEMELEC • Engr. Nikolai</div>
 
     <header class="title-section">
-      <h1>What study style did you use for Quiz #5?</h1>
-      <p>Identify the day Quiz 5 was conducted, then select each day you actually reviewed before it.</p>
+      <h1>Quiz #5 Study Style Tracker</h1>
+      <p>Identify when Quiz 5 happened, then select each calendar date you actually reviewed before it.</p>
     </header>
 
-    <!-- Quiz Conducted Day Selector: Sunday removed, Monday to Saturday kept -->
-    <div class="quiz-selector-bar">
-      <span>When was Quiz #5 conducted?</span>
-      <select id="quizConductedDay" aria-label="Select Quiz Day">
-        <option value="Friday" selected>Friday</option>
-        <option value="Thursday">Thursday</option>
-        <option value="Wednesday">Wednesday</option>
-        <option value="Tuesday">Tuesday</option>
-        <option value="Monday">Monday</option>
-        <option value="Saturday">Saturday</option>
-      </select>
+    <!-- STEP PROGRESSION PROMPT -->
+    <div class="step-banner">
+      <div class="step-indicator">
+        <span id="stepBadge" class="step-number step-quiz">1</span>
+        <span id="stepTitle" class="step-text">Tap the date Quiz #5 was conducted</span>
+      </div>
+      <button id="toggleModeBtn" class="step-btn-toggle" type="button">Change Quiz Date</button>
     </div>
 
-    <div class="grid-wrapper">
-      <div class="week-grid" role="region" aria-label="Study Schedule Grid">
-        <div class="day-header weekend" data-header="Saturday">Sat</div>
-        <div class="day-header weekend" data-header="Sunday">Sun</div>
-        <div class="day-header" data-header="Monday">Mon</div>
-        <div class="day-header" data-header="Tuesday">Tue</div>
-        <div class="day-header" data-header="Wednesday">Wed</div>
-        <div class="day-header" data-header="Thursday">Thu</div>
-        <div class="day-header is-quiz-day" data-header="Friday">Fri</div>
-
-        <!-- Saturday Review -->
-        <button class="day-cell" data-day="Saturday" type="button" aria-label="Saturday">
-          <span class="day-abbr">Sa</span>
-          <span class="quiz-tag" style="display:none;">Quiz</span>
-          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+    <!-- CALENDAR UI -->
+    <div class="calendar-container">
+      <div class="calendar-nav">
+        <button id="prevMonthBtn" class="nav-btn" type="button" aria-label="Previous Month">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-
-        <!-- Sunday Review (Kept as review option) -->
-        <button class="day-cell" data-day="Sunday" type="button" aria-label="Sunday">
-          <span class="day-abbr">Su</span>
-          <span class="quiz-tag" style="display:none;">Quiz</span>
-          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-        </button>
-
-        <!-- Monday Review -->
-        <button class="day-cell" data-day="Monday" type="button" aria-label="Monday">
-          <span class="day-abbr">M</span>
-          <span class="quiz-tag" style="display:none;">Quiz</span>
-          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-        </button>
-
-        <!-- Tuesday Review -->
-        <button class="day-cell" data-day="Tuesday" type="button" aria-label="Tuesday">
-          <span class="day-abbr">T</span>
-          <span class="quiz-tag" style="display:none;">Quiz</span>
-          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-        </button>
-
-        <!-- Wednesday Review -->
-        <button class="day-cell" data-day="Wednesday" type="button" aria-label="Wednesday">
-          <span class="day-abbr">W</span>
-          <span class="quiz-tag" style="display:none;">Quiz</span>
-          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-        </button>
-
-        <!-- Thursday Review -->
-        <button class="day-cell" data-day="Thursday" type="button" aria-label="Thursday">
-          <span class="day-abbr">Th</span>
-          <span class="quiz-tag" style="display:none;">Quiz</span>
-          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-        </button>
-
-        <!-- Friday Review -->
-        <button class="day-cell quiz-day-cell" data-day="Friday" type="button" aria-label="Friday">
-          <span class="day-abbr">F</span>
-          <span class="quiz-tag">Quiz</span>
-          <svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        <span id="calendarMonthTitle" class="calendar-month-title">October 2026</span>
+        <button id="nextMonthBtn" class="nav-btn" type="button" aria-label="Next Month">
+          <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
         </button>
       </div>
+
+      <div class="calendar-grid">
+        <div class="calendar-day-header weekend">Sun</div>
+        <div class="calendar-day-header">Mon</div>
+        <div class="calendar-day-header">Tue</div>
+        <div class="calendar-day-header">Wed</div>
+        <div class="calendar-day-header">Thu</div>
+        <div class="calendar-day-header">Fri</div>
+        <div class="calendar-day-header weekend">Sat</div>
+      </div>
+
+      <!-- DYNAMIC DAY CELLS -->
+      <div id="calendarDays" class="calendar-grid" style="margin-top: 8px;"></div>
     </div>
 
+    <!-- RESULT & GOOGLE FORM REDIRECT -->
     <div class="status-section">
       <div id="statusPill" class="status-pill status-none">
         <span class="indicator-dot"></span>
@@ -553,10 +582,10 @@
       </div>
 
       <p id="statusDescription" class="status-description">
-        You did not study or prepare on any day before Quiz #5.
+        Please select the date Quiz #5 was held first.
       </p>
 
-      <span id="selectedSummary" class="selected-summary">0 review days selected</span>
+      <span id="selectedSummary" class="selected-summary">Quiz: Not selected • 0 review days</span>
 
       <button id="surveyBtn" class="survey-btn" type="button">
         <span>Continue to Survey with my result</span>
@@ -578,9 +607,18 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const dayCells = Array.from(document.querySelectorAll('.day-cell'));
-      const dayHeaders = Array.from(document.querySelectorAll('.day-header'));
-      const quizSelector = document.getElementById('quizConductedDay');
+      // Configuration & Google Form Endpoint
+      const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeopXUSNnxjcF5Mo8oV_Q5lU3nTTji55Q9RTD6CORmWIOASmw/viewform?usp=pp_url";
+      const ENTRY_ID = "entry.1317088367";
+
+      // DOM Elements
+      const calendarMonthTitle = document.getElementById('calendarMonthTitle');
+      const calendarDays = document.getElementById('calendarDays');
+      const prevMonthBtn = document.getElementById('prevMonthBtn');
+      const nextMonthBtn = document.getElementById('nextMonthBtn');
+      const stepBadge = document.getElementById('stepBadge');
+      const stepTitle = document.getElementById('stepTitle');
+      const toggleModeBtn = document.getElementById('toggleModeBtn');
       const statusPill = document.getElementById('statusPill');
       const statusLabel = document.getElementById('statusLabel');
       const statusDescription = document.getElementById('statusDescription');
@@ -588,103 +626,212 @@
       const resetBtn = document.getElementById('resetBtn');
       const surveyBtn = document.getElementById('surveyBtn');
 
-      const DAYS_ORDER = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-
-      const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeopXUSNnxjcF5Mo8oV_Q5lU3nTTji55Q9RTD6CORmWIOASmw/viewform?usp=pp_url";
-      const ENTRY_ID = "entry.1317088367";
-
+      // State
+      let displayedDate = new Date();
+      let quizDate = null; // Stored as "YYYY-MM-DD"
+      let reviewDates = new Set(); // Set of "YYYY-MM-DD"
+      let currentStep = 'quiz'; // 'quiz' | 'review'
       let currentFormAnswer = 'No+Review';
 
-      function updateQuizDayDisplay() {
-        const quizDay = quizSelector.value;
+      const MONTH_NAMES = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
 
-        dayHeaders.forEach(header => {
-          const dayName = header.getAttribute('data-header');
-          if (dayName === quizDay) {
-            header.classList.add('is-quiz-day');
-          } else {
-            header.classList.remove('is-quiz-day');
+      function formatDateKey(year, month, day) {
+        const m = String(month + 1).padStart(2, '0');
+        const d = String(day).padStart(2, '0');
+        return `${year}-${m}-${d}`;
+      }
+
+      function updateStepUI() {
+        if (currentStep === 'quiz') {
+          stepBadge.className = 'step-number step-quiz';
+          stepBadge.textContent = '1';
+          stepTitle.textContent = 'Step 1: Tap the date Quiz #5 was conducted';
+          toggleModeBtn.style.display = quizDate ? 'inline-block' : 'none';
+          toggleModeBtn.textContent = 'Review Mode';
+        } else {
+          stepBadge.className = 'step-number';
+          stepBadge.textContent = '2';
+          stepTitle.textContent = 'Step 2: Tap the dates you actually reviewed';
+          toggleModeBtn.style.display = 'inline-block';
+          toggleModeBtn.textContent = 'Change Quiz Date';
+        }
+      }
+
+      function renderCalendar() {
+        const year = displayedDate.getFullYear();
+        const month = displayedDate.getMonth();
+
+        calendarMonthTitle.textContent = `${MONTH_NAMES[month]} ${year}`;
+        calendarDays.innerHTML = '';
+
+        const firstDayIdx = new Date(year, month, 1).getDay(); // 0 = Sun
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Leading empty slots
+        for (let i = 0; i < firstDayIdx; i++) {
+          const empty = document.createElement('div');
+          empty.className = 'cal-cell empty';
+          calendarDays.appendChild(empty);
+        }
+
+        // Days of current month
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dateKey = formatDateKey(year, month, day);
+          const cell = document.createElement('button');
+          cell.type = 'button';
+          cell.className = 'cal-cell';
+          cell.setAttribute('data-date', dateKey);
+
+          const num = document.createElement('span');
+          num.className = 'cal-date-number';
+          num.textContent = day;
+          cell.appendChild(num);
+
+          const tag = document.createElement('span');
+          tag.className = 'cal-tag';
+          cell.appendChild(tag);
+
+          // Mark quiz day
+          if (quizDate === dateKey) {
+            cell.classList.add('is-quiz-day');
+            tag.textContent = 'QUIZ';
           }
-        });
 
-        dayCells.forEach(cell => {
-          const dayName = cell.getAttribute('data-day');
-          const tag = cell.querySelector('.quiz-tag');
-          if (dayName === quizDay) {
-            cell.classList.add('quiz-day-cell');
-            if (tag) tag.style.display = 'inline-block';
-          } else {
-            cell.classList.remove('quiz-day-cell');
-            if (tag) tag.style.display = 'none';
+          // Mark review days
+          if (reviewDates.has(dateKey)) {
+            cell.classList.add('is-review-day');
+            if (quizDate !== dateKey) {
+              tag.textContent = 'REV';
+            } else {
+              tag.textContent = 'QUIZ+REV';
+            }
           }
-        });
 
-        evaluateReviewState();
+          cell.addEventListener('click', () => handleCellClick(dateKey));
+          calendarDays.appendChild(cell);
+        }
+      }
+
+      function handleCellClick(dateKey) {
+        if (currentStep === 'quiz') {
+          // Select quiz date
+          quizDate = dateKey;
+          // After picking quiz date, transition to review date selection
+          currentStep = 'review';
+          updateStepUI();
+          renderCalendar();
+          evaluateReviewState();
+        } else {
+          // In review selection mode
+          if (reviewDates.has(dateKey)) {
+            reviewDates.delete(dateKey);
+          } else {
+            reviewDates.add(dateKey);
+          }
+          renderCalendar();
+          evaluateReviewState();
+        }
       }
 
       function evaluateReviewState() {
-        const quizDay = quizSelector.value;
-        const quizIdx = DAYS_ORDER.indexOf(quizDay);
-        const dayBefore = DAYS_ORDER[(quizIdx - 1 + DAYS_ORDER.length) % DAYS_ORDER.length];
-
-        const selectedCells = dayCells.filter(cell => cell.classList.contains('selected'));
-        const selectedDays = selectedCells.map(cell => cell.getAttribute('data-day'));
-        const count = selectedDays.length;
-
         statusPill.className = 'status-pill';
 
-        if (count === 0) {
+        if (!quizDate) {
           statusPill.classList.add('status-none');
           statusLabel.textContent = 'No review';
-          statusDescription.textContent = "You did not study or prepare on any day before Quiz #5.";
-          selectedSummary.textContent = '0 review days selected';
+          statusDescription.textContent = "Please select the date Quiz #5 was conducted first.";
+          selectedSummary.textContent = "Quiz: Not selected • 0 review days";
           currentFormAnswer = 'No+Review';
           return;
         }
 
-        const isStrictlyCramming = selectedDays.every(d => d === quizDay || d === dayBefore);
+        const [qYear, qMonth, qDay] = quizDate.split('-').map(Number);
+        const qDateObj = new Date(qYear, qMonth - 1, qDay);
+
+        // Day immediately before quiz
+        const dayBeforeObj = new Date(qDateObj);
+        dayBeforeObj.setDate(dayBeforeObj.getDate() - 1);
+        const dayBeforeKey = formatDateKey(dayBeforeObj.getFullYear(), dayBeforeObj.getMonth(), dayBeforeObj.getDate());
+
+        const reviewCount = reviewDates.size;
+        const reviewList = Array.from(reviewDates);
+
+        // Format quiz display name
+        const qDisplay = `${MONTH_NAMES[qDateObj.getMonth()].slice(0, 3)} ${qDateObj.getDate()}`;
+
+        if (reviewCount === 0) {
+          statusPill.classList.add('status-none');
+          statusLabel.textContent = 'No review';
+          statusDescription.textContent = `You did not study or prepare on any day before Quiz #5 (${qDisplay}).`;
+          selectedSummary.textContent = `Quiz: ${qDisplay} • 0 review days`;
+          currentFormAnswer = 'No+Review';
+          return;
+        }
+
+        // Cramming rule: All selected review dates are exclusively on the quiz date, the day immediately before, or both
+        const isStrictlyCramming = reviewList.every(d => d === quizDate || d === dayBeforeKey);
 
         if (isStrictlyCramming) {
           statusPill.classList.add('status-cramming');
           statusLabel.textContent = 'Cramming';
-          statusDescription.textContent = `Studied only the day before (${dayBefore}) or on the day of Quiz #5 (${quizDay}).`;
+          statusDescription.textContent = `Studied only the day before or on the day of Quiz #5 (${qDisplay}).`;
           currentFormAnswer = 'Cram';
-        } else if (count > 1) {
+        } else if (reviewCount > 1) {
           statusPill.classList.add('status-spaced');
           statusLabel.textContent = 'Spaced out review';
-          statusDescription.textContent = "Spread study sessions across multiple days leading up to Quiz #5.";
+          statusDescription.textContent = `Spread study sessions across multiple calendar dates leading up to Quiz #5.`;
           currentFormAnswer = 'Spaced-out+Study';
         } else {
+          // Exactly 1 review day, and it's earlier than 1 day before the quiz
           statusPill.classList.add('status-block');
           statusLabel.textContent = 'Block review';
-          statusDescription.textContent = "Did all studying in a single session earlier in the week.";
+          statusDescription.textContent = `Did all studying in a single dedicated session earlier before Quiz #5.`;
           currentFormAnswer = 'Block+Review';
         }
 
-        selectedSummary.textContent = `${count} review day${count > 1 ? 's' : ''} selected: ${selectedDays.join(', ')}`;
+        selectedSummary.textContent = `Quiz: ${qDisplay} • ${reviewCount} review day${reviewCount > 1 ? 's' : ''}`;
       }
 
-      quizSelector.addEventListener('change', updateQuizDayDisplay);
-
-      dayCells.forEach(cell => {
-        cell.addEventListener('click', (e) => {
-          e.preventDefault();
-          cell.classList.toggle('selected');
-          evaluateReviewState();
-        });
+      // Month Navigation
+      prevMonthBtn.addEventListener('click', () => {
+        displayedDate.setMonth(displayedDate.getMonth() - 1);
+        renderCalendar();
       });
 
+      nextMonthBtn.addEventListener('click', () => {
+        displayedDate.setMonth(displayedDate.getMonth() + 1);
+        renderCalendar();
+      });
+
+      // Step Switcher
+      toggleModeBtn.addEventListener('click', () => {
+        currentStep = currentStep === 'quiz' ? 'review' : 'quiz';
+        updateStepUI();
+      });
+
+      // Reset
       resetBtn.addEventListener('click', () => {
-        dayCells.forEach(cell => cell.classList.remove('selected'));
+        quizDate = null;
+        reviewDates.clear();
+        currentStep = 'quiz';
+        updateStepUI();
+        renderCalendar();
         evaluateReviewState();
       });
 
+      // Submit to Google Form
       surveyBtn.addEventListener('click', () => {
         const finalUrl = `${FORM_BASE_URL}&${ENTRY_ID}=${currentFormAnswer}`;
         window.open(finalUrl, '_blank', 'noopener,noreferrer');
       });
 
-      updateQuizDayDisplay();
+      // Initial Render
+      updateStepUI();
+      renderCalendar();
+      evaluateReviewState();
     });
   </script>
 </body>
